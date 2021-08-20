@@ -14,13 +14,13 @@ class UserController extends Controller
         $fields = $request->validate([
             'name'=>'required|string',
             'phone_number'=>'required|digits:10',
-            'email'=>'required|string|unique:users,email',
+            //'email'=>'required|string|unique:users,email',
             'password'=>'required|string|confirmed'
         ]);
 
         $user = User::create([
             'name' => $fields['name'],
-            'email' => $fields['email'],
+            //'email' => $fields['email'],
             'phone_number' => $fields['phone_number'],
             'password' => bcrypt($fields['password'])
         ]);
