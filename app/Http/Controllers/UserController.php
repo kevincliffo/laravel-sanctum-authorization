@@ -13,6 +13,7 @@ class UserController extends Controller
     {
         $fields = $request->validate([
             'name'=>'required|string',
+            'phone_number'=>'required|digits:10',
             'email'=>'required|string|unique:users,email',
             'password'=>'required|string|confirmed'
         ]);
@@ -20,6 +21,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
+            'phone_number' => $fields['phone_number'],
             'password' => bcrypt($fields['password'])
         ]);
 
@@ -35,11 +37,12 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $fields = $request->validate([
-            'email'=>'required|string',
+            //'email'=>'required|string',
+            'phone_number'=>'required|digits:10',
             'password'=>'required|string'
         ]);
 
-        $user = User::where('email', $fields['email'])->first();
+        $user = User::where('phone_number', $fields['phone_number'])->first();
         if(!$user || !Hash::check($fields['password'], $user->password))
         {
             return response([
@@ -60,7 +63,7 @@ class UserController extends Controller
     {
         auth()->user()->tokens()->delete();
         return [
-            'message'=> "Logged Out"
+            'message'=> 'Logged Out'
         ];
     }
 }
